@@ -7,10 +7,11 @@ int card[4][13] = {};
 void shuffle();
 int main(){
 	shuffle();
-	int hand[5] = {};
-	for(int i = 0; i < 5; i++){
+	//int hand[5] = {};
+    int hand[5] = {2, 15, 28, 3, 16};
+	/*for(int i = 0; i < 5; i++){
 		hand[i] = card[0][i];
-	}
+	}*/
 	int ispair= 0;//
 	int istwopair = 0;//
 	int isthree = 0;//
@@ -43,10 +44,15 @@ int main(){
     printf("\n");
 	for(int i = 0; i < 4; i++){
 		for(int j = i + 1; j < 5; j++){
-			if(handcpy[i][1] == handcpy[j][1] && !ispair) ispair = 1;
-			else if(handcpy[i][1] == handcpy[j][1] && ispair) istwopair = 1;
+			if(handcpy[i][1] == handcpy[j][1] && !ispair) ispair++;
+			if(ispair == 2){
+                istwopair = 1; 
+            } 
 			for(int k = j + 1; k < 5; k++){
-				if(handcpy[i][1] == handcpy[j][1] && handcpy[i][1] == handcpy[k][1]) isthree = 1;
+				if(handcpy[i][1] == handcpy[j][1] && handcpy[i][1] == handcpy[k][1]){
+                    isthree = handcpy[i][1];
+                    ispair -= 1;
+                } 
 				for(int l = k + 1; l < 5; l++){
 					if(handcpy[i][1] == handcpy[j][1] && handcpy[i][1] == handcpy[k][1] && handcpy[i][1] == handcpy[l][1]){
 						isfour = 1;
