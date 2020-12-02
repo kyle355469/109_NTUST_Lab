@@ -21,16 +21,34 @@ int main(){
 	int handcpy[5][2];
 	for(int i = 0; i < 5; i++){
 		handcpy[i][0] = hand[i] / 13; //flower
-		handcpy[i][1] = hand[i] % 13; // number
+		handcpy[i][1] = (hand[i] - 1) % 13 + 1; // number
 	}
+    for(int i = 0; i < 5; i++){
+        switch(handcpy[i][0]){
+            case 0:
+                printf("黑桃");
+                break;
+            case 1:
+                printf("梅花");
+                break;
+            case 2:
+                printf("紅心");
+                break;
+            case 3:
+                printf("方塊");
+                break;
+        }
+        printf("%d ", handcpy[i][1]);
+    }
+    printf("\n");
 	for(int i = 0; i < 4; i++){
 		for(int j = i + 1; j < 5; j++){
-			if(handcpy[i][0] == handcpy[j][0] && !ispair) ispair = 1;
-			else if(handcpy[i][0] == handcpy[j][0] && ispair) istwopair = 1;
+			if(handcpy[i][1] == handcpy[j][1] && !ispair) ispair = 1;
+			else if(handcpy[i][1] == handcpy[j][1] && ispair) istwopair = 1;
 			for(int k = j + 1; k < 5; k++){
-				if(handcpy[i][0] == handcpy[j][0] && handcpy[i][0] == handcpy[k][0]) isthree = 1;
+				if(handcpy[i][1] == handcpy[j][1] && handcpy[i][1] == handcpy[k][1]) isthree = 1;
 				for(int l = k + 1; l < 5; l++){
-					if(handcpy[i][0] == handcpy[j][0] && handcpy[i][0] == handcpy[k][0] && handcpy[i][0] == handcpy[l][0]){
+					if(handcpy[i][1] == handcpy[j][1] && handcpy[i][1] == handcpy[k][1] && handcpy[i][1] == handcpy[l][1]){
 						isfour = 1;
 					}
 				}
@@ -71,16 +89,15 @@ int main(){
 
 void shuffle(){
 	srand(time(NULL));
-	int arr[4][13] = {};
 	for(int i = 0; i < 4; i++){
 		for(int j = 0; j < 13; j++){
-			arr[i][j] = i * 13 + j + 1;
+			card[i][j] = i * 13 + j + 1;
 		}
 	}
 	for(int i = 0; i < 4; i++){
 		for(int j = 0; j < 13; j++){
 			int a = rand();
-			swap(&arr[i][j], &arr[a % 4][a % 13]);
+			swap(&card[i][j], &card[a % 4][a % 13]);
 		}
 	}
 }
