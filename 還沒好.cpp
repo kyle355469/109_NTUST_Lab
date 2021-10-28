@@ -7,8 +7,8 @@ using namespace std;
 
 
 void ROBDD(ifstream&);
-void Redundant(Node*, int);
-void Save(string, Node*, int);
+void Redundant(int);
+void Save(string, string, int);
 
 int main(int argc, char *argv[])
 {
@@ -47,7 +47,7 @@ void ROBDD(ifstream& fin)
 		if (str == ".i")
 		{
 			fin >> num_In;	
-			arr = new int*[pow(2, num_In) + 1];
+			arr = new int*[(int)pow(2, num_In) + 1];
 			for(int i = 0; i < pow(2, num_In) + 1; i++){
 				arr[i] = new int[2];
 				arr[i][0] = 0;
@@ -76,9 +76,9 @@ void ROBDD(ifstream& fin)
 		}
 		else if (str == ".p")
 		{
-			bool *bit = new bool[pow(2,num_In)];
+			bool *bit = new bool[(int)pow(2,num_In)];
 			int times;
-			fin >> time;
+			fin >> times;
 			for(int i = 0; i < times; i++){
 				string input;
 				fin >> input;
@@ -86,7 +86,7 @@ void ROBDD(ifstream& fin)
 					bit[i] = false;
 				}
 				for(int i = 0; i < input.length(); i++){
-					if(input[i] = ='1')
+					if(input[i] =='1')
 						bit[i * 2 + 1] = true;
 					else if(input[i] == '0')
 						bit[i * 2] = true;
@@ -101,7 +101,7 @@ void ROBDD(ifstream& fin)
 					int temp = i * 2 - pow(2, num_In);
 					for(int j = 0; j < num_In; j++){
 						if(bit[temp % 2 + j * 2] == false)
-							f = false;
+							test = false;
 						temp /= 2;
 					}
 					if(arr[i][0] == 0 && test == true){
@@ -112,7 +112,7 @@ void ROBDD(ifstream& fin)
 					temp = i * 2 + 1 - pow(2, num_In);
 					for(int j = 0; j < num_In; j++){
 						if(bit[temp % 2 + j * 2] == false){
-							f = false;
+							test = false;
 						}
 						temp /= 2;
 					}
@@ -125,7 +125,7 @@ void ROBDD(ifstream& fin)
 		}
 		else if (str == ".e")
 		{
-			
+			save("robdd.dot", "ROBDD", num_In);
 		}
 	}
 }
@@ -155,7 +155,6 @@ void ROBDD(ifstream& fin)
 		{
 			if (n[i].isRedundant)continue;
 			if (n[j].isRedundant)continue;
-
 			if (n[i].Else_edge == n[j].Else_edge &&
 				n[i].Then_edge == n[j].Then_edge &&
 				n[i].Variable == n[j].Variable)
@@ -172,15 +171,14 @@ void ROBDD(ifstream& fin)
 			}
 		}
 	}
-
 	if (f)
 		Redundant(n, size);
 }*/
 
-void Save(string fileName,Node *n, int size)
+void Save(string fileName, string typeName, int size)
 {
 	ofstream fout(fileName, ofstream::out);
-	fout << "digraph " << fileName << " {" << endl;
+	fout << "digraph " << typeName << " {" << endl;
 	fout << "\t0 [label=\"0\", shape=box];" << endl;
 	for (int i = 1; i < size; i++)
 	{
